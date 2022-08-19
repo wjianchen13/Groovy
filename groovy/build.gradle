@@ -3,6 +3,7 @@ apply plugin: 'groovy'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation localGroovy()
+    implementation files('libs\\gson-2.8.2-sources.jar')
 }
 
 sourceCompatibility = "1.7"
