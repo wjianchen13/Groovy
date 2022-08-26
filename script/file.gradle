@@ -1,0 +1,63 @@
+/**
+ * gradle文件相关api
+ */
+println("=============================================================> gradle file api start")
+
+/*// 根工程文件路径api
+println "the root file path is: " + getRootDir().absolutePath
+// 获取build文件路径
+println "the build file path is: " + getBuildDir().absolutePath
+// 获取当前工程路径
+println "the project file path is: " + getProjectDir().absolutePath*/
+
+
+/*// 在当前project下查找对应的文件
+println getContent('README.md')
+def getContent(String path) {
+    try {
+        def file = file(path)
+        return file.text
+    }catch(GradleException e){
+        println 'file not found'
+    }
+}*/
+
+
+/*// 文件拷贝
+copy {
+    println("===================> 文件拷贝开始")
+    from file('README.md')
+    into getRootProject().getBuildDir()
+//    into getRootProject().getBuildDir().absolutePath // 这句也可以拷贝的
+
+    println("===================> 文件拷贝结束")
+}*/
+
+
+/*// 文件夹拷贝
+copy {
+    println("===================> 文件夹拷贝开始")
+    from file('build/outputs/apk/')
+    into getRootProject().getBuildDir().path + 'apk'
+    exclude { // 某些文件不需要拷贝可以在这里排除
+
+    }
+    rename {} // 指定文件重命名
+
+    println("===================> 文件夹拷贝结束")
+}*/
+
+// 对文件树进行遍历
+fileTree('build/outputs/apk/'){ FileTree fileTree ->
+    fileTree.visit { FileTreeElement element ->
+        println 'the file name is: ' + element.file.name
+        copy {
+            from element.file
+            into getRootProject().getBuildDir().path + '/test/'
+        }
+
+    }
+}
+
+
+

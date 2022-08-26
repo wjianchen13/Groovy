@@ -1,0 +1,126 @@
+/**
+ * Project api
+ */
+println("=============================================================> project api start")
+
+/**
+ * 输出所有的的project
+ */
+//this.getProjects()
+//
+//def getProjects() {
+//    println '--------------------------'
+//    println 'Root Project'
+//    println '--------------------------'
+//    this.getAllprojects().eachWithIndex { Project project, int index ->
+//        if(index == 0) {
+//            println "Root project:'${project.name}'"
+//        }else {
+//            println "+---- project:'${project.name}'"
+//        }
+//    }
+//}
+
+/**
+ * 获取当前项目的所有子project
+ */
+//this.getProjects()
+//def getProjects() {
+//    println '--------------------------'
+//    println 'Sub Project'
+//    println '--------------------------'
+//    this.getSubprojects().eachWithIndex { Project project, int index ->
+//        println "+---- project:'${project.name}'"
+//    }
+//}
+
+/**
+ * 获取父project,需要写在子Project才能获取到父Project
+ */
+//this.getParentProject()
+//def getParentProject() {
+//    def name = this.getParent().name
+//    println "this parent project name is: ${name}"
+//
+//}
+
+/**
+ * 获取根project
+ */
+//this.getRootPro()
+//def getRootPro() {
+//    def name = this.getRootProject().name
+//    println "this root project name is: ${name}"
+//}
+
+/**
+ * 从根工程下找name为app的project
+ */
+//project('app') { Project project ->
+//    println project.name
+//    apply plugin : 'com.android.application'
+//    group 'com.test'
+//    version '1.0.2'
+//    dependencies {
+//
+//    }
+//
+//    android {
+//
+//    }
+//
+//}
+//
+//println project('app').version
+
+/**
+ * 配置当前节点工程和其subproject的所有project
+ */
+//allprojects {
+//    group 'com.test'
+//    version '1.0.0-release'
+//}
+//println project('groovy').group
+//println project('app').group
+
+/**
+ * 不包括当前节点工程，只包括它的subproject
+ * project.plugins.hasPlugin判断没有起作用，不知道为什么
+ */
+//subprojects { Project project ->
+//    println project.name
+//
+////    if(project.plugins.hasPlugin('com.android.library')) {
+////        println "hello"
+//////        apply from : './publishToMavent.gradle.'
+////
+////    }
+//
+//    if("module" == project.name) {
+//        println "hello"
+//    }
+//
+//}
+
+subprojects {
+    ext {
+        compileSdkVersion = 28
+        libAndroidAppcompat = 'com.android.support:appcompat-v7:28.0.0'
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

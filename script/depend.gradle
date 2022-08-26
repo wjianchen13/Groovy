@@ -1,0 +1,31 @@
+/**
+ * 依赖相关api
+ */
+println("=============================================================> gradle depend api start")
+
+buildscript { ScriptHandler scriptHandler ->
+    // 配置工程的仓库地址
+    scriptHandler.repositories { RepositoryHandler repositoryHandler ->
+        repositoryHandler.jcenter()
+        repositoryHandler.mavenCentral()
+        repositoryHandler.mavenLocal()
+        repositoryHandler.ivy {}
+        repositoryHandler.maven {
+            name 'personal'
+            url 'http://localhost:8081:/nexus/repositories/'
+            credentials {
+                username = 'admin'
+                password = 'admin123'
+            }
+        }
+    }
+
+    // 配置工程的"插件"地址
+    scriptHandler.dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.2'
+    }
+}
+
+
+
+

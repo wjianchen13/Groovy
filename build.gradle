@@ -1,4 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+
+//apply from : file('project.gradle')
+//apply from : file('api.gradle')
+apply from : file('property.gradle')
+//apply from : file('script/file.gradle')
+apply from : file('script/depend.gradle')
+
+
 buildscript {
     ext {
         kotlin_version = '1.3.72'
@@ -26,3 +35,18 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+//subprojects { Project project ->
+//    println project.name
+//
+//    if(project.plugins.hasPlugin('com.android.library')) {
+//        println "hello"
+////        apply from : './publishToMavent.gradle.'
+//
+//    }
+//
+//    if("module" == project.name) {
+//        println "hello"
+//    }
+//
+//}

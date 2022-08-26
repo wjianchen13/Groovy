@@ -1,0 +1,45 @@
+/**
+ * Project生命周期监听
+ */
+println("=============================================================> project start")
+
+/**
+ * 在初始化阶段和配置阶段之间的监听，配置阶段执行之前。
+ * beforeEvaluate 必须在父模块的 build.gradle 对子模块进行配置才能生效，因为在当前模块的 build.gradle
+ * 中配置，它自己本身都没配置好，所以不会监听到。
+ */
+this.beforeEvaluate {
+    println("配置阶段开始执行...")
+}
+
+/**
+ * 配置阶段完成之后的回调
+ */
+this.afterEvaluate {
+    println("配置阶段执行完毕...")
+}
+
+/**
+ * gradle执行完毕后的回调监听
+ */
+this.gradle.buildFinished {
+    println("执行阶段执行完毕...")
+}
+
+/**
+ * 等同beforeEvaluate
+ */
+this.gradle.beforeProject {
+
+}
+
+/**
+ * 等同afterEvaluate
+ */
+this.gradle.afterProject {
+
+}
+
+
+
+

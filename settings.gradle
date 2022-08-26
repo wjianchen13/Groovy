@@ -1,3 +1,16 @@
 include ':groovy'
 include ':app'
+include ':module'
 rootProject.name = "Groovy"
+
+
+//if(hasProperty('isLoadTest') ? isLoadTest.toBoolean() : false) {
+//    include ':module'
+//}
+
+
+
+/**
+ * 初始化阶段监听
+ */
+println("初始化阶段执行开始...")
