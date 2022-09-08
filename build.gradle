@@ -5,8 +5,13 @@
 //apply from : file('api.gradle')
 apply from : file('property.gradle')
 //apply from : file('script/file.gradle')
-apply from : file('script/depend.gradle')
+//apply from : file('script/depend.gradle')
 
+ext {
+    android = [
+       versionCode         : 1,
+       versionName         : '1.0.0']
+}
 
 buildscript {
     ext {
@@ -34,6 +39,10 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "GBK"
 }
 
 //subprojects { Project project ->

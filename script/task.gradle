@@ -1,0 +1,307 @@
+/**
+ * task相关api
+ */
+println("=============================================================> gradle task start")
+
+///**
+// * 定义一个task
+// */
+//task helloTask {
+//    println 'I am helloTask'
+//}
+//
+///**
+// * 通过TaskContainer创建Task
+// */
+//this.tasks.create(name: 'helloTask2') {
+//    println 'I am helloTask2'
+//}
+
+///**
+// * 为task设置组名和描述信息
+// */
+//task helloTask (group: 'imooc', description: 'task study') {
+//    println 'I am helloTask'
+//}
+//
+//this.tasks.create(name: 'helloTask2') {
+//    setGroup('imooc')
+//    setDescription('task study')
+//    println 'I am helloTask2'
+//}
+
+//task helloTask (group: 'imooc', description: 'task study') {
+//    println 'I am helloTask'
+//    doFirst {
+//        println 'the task group is: ' + group
+//    }
+//    // 可以多次调用
+//    doFirst {}
+//}
+//
+//helloTask.doFirst {
+//    println 'the task description is: '+ description
+//}
+
+// 在这个方法执行的时候，project所有的task都已经被有序地创建好了
+// 如果直接在脚本找，有些task没有被创建完毕，会出现task找不到报错
+
+//def startBuildTime, endBuildTime
+//this.afterEvaluate {
+//    def preBuildTask = project.tasks.getByName('preBuild')
+//    preBuildTask.doFirst {
+//        startBuildTime = System.currentTimeMillis()
+//        println 'the start time is: ' + startBuildTime
+//    }
+//    def buildTask = project.tasks.getByName('build')
+//    buildTask.doLast {
+//        endBuildTime = System.currentTimeMillis()
+//        println "the build time is: ${endBuildTime - startBuildTime}"
+//    }
+//}
+
+///**
+// * task 依赖
+// */
+//task taskX {
+//    doLast {
+//        println 'taskX'
+//    }
+//}
+//
+//task taskY {
+//    doLast {
+//        println 'taskY'
+//    }
+//}
+////task taskZ(dependsOn : [taskX, taskY]) {
+////    doLast {
+////        println 'taskZ'
+////    }
+////}
+//
+//task taskZ() {
+//    doLast {
+//        println 'taskZ'
+//    }
+//}
+//
+//taskZ.dependsOn(taskX, taskY)
+
+//task lib1 {
+//    doLast {
+//        println 'lib1'
+//    }
+//}
+//
+//task lib2 {
+//    doLast {
+//        println 'lib2'
+//    }
+//}
+//
+//task noLib {
+//    doLast {
+//        println 'noLib'
+//    }
+//}
+//
+//task taskZ {
+//    dependsOn this.tasks.findAll { task ->
+//        println 'dependsOn: ' + task.name
+//        task.name.startsWith('lib')
+//    }
+//    doLast {
+//        println 'taskZ'
+//    }
+//}
+
+//task handleReleaseFile {
+//    def srcFile = file('releases.xml')
+//    def destDir = new File(this.buildDir, 'generated/release/')
+//    doLast {
+//        println '开始解析对应的xml文件...'
+//        destDir.mkdir()
+//        def releases = new XmlParser().parse(srcFile)
+//        releases.release.each{releaseNode ->
+//            // 解析每个release节点的内容
+//            def name = releaseNode.versionName.text()
+//            def versionCode = releaseNode.versionCode.text()
+//            def versionInfo = releaseNode.versionInfo.text()
+//            // 创建文件，并写入节点数据
+//            def destFile = new File(destDir, "release-${name}.txt")
+//            destFile.withWriter { writer ->
+//                writer.write("${name} -> ${versionCode} -> ${versionInfo}")
+//
+//            }
+//        }
+//    }
+//}
+//
+//task handleReleaseFileTest (dependsOn : handleReleaseFile){
+//    def dir = fileTree( 'build/generated/release/')
+//    doLast {
+//        dir.each {
+//            println 'the file name is: ' + it
+//        }
+//        println '输出完成...'
+//    }
+//}
+
+
+///**
+// * task的输入输出详解
+// */
+//import groovy.xml.MarkupBuilder
+//
+//ext {
+//    versionName = '1.1.0'
+//    versionCode = '110'
+//    versionInfo = 'App的第2个版本，上线了一些基础的核心功能'
+//    destFile = file('releases1.xml')
+//    if(destFile != null && !destFile.exists()) {
+//        destFile.createNewFile()
+//    }
+//}
+//
+//task readTask {
+//    inputs.file destFile
+//    doLast {
+//        def file = inputs.files.singleFile
+//        println file.text
+//    }
+//}
+//
+//task writeTask {
+//    // 为Task指定输入
+//    inputs.property('versionCode', this.versionCode)
+//    inputs.property('versionName', this.versionName)
+//    inputs.property('versionInfo', this.versionInfo)
+//
+//    outputs.file destFile
+//
+//    doLast {
+//        def data = inputs.getProperties()
+//        File file = outputs.getFiles().getSingleFile()
+//
+//        // 将Map转化为实体对象
+//        def versionMsg = new VersionMsg(data)
+//        def sw = new StringWriter()
+//        def xmlBuilder = new MarkupBuilder(sw)
+//
+//        if(file.text != null && file.text.size() <= 0) {
+//            // 文件中没有内容
+//            xmlBuilder.releases {
+//                release {
+//                    versionCode(versionMsg.versionCode)
+//                    versionName(versionMsg.versionName)
+//                    versionInfo(versionMsg.versionInfo)
+//                }
+//            }
+//            file.withWriter{writer -> writer.append(sw.toString())}
+//        } else {
+//            // 已有版本信息
+//            xmlBuilder.release {
+//                versionCode(versionMsg.versionCode)
+//                versionName(versionMsg.versionName)
+//                versionInfo(versionMsg.versionInfo)
+//            }
+//            // 将生成的xml数据插入到根节点之前
+//            def lines = file.readLines()
+//            def lengths = lines.size() - 1
+//            file.withWriter { writer ->
+//                lines.eachWithIndex { String line, int index ->
+//                    if(index != lengths) {
+//                        writer.append(line + '\r\n')
+//                    } else if(index == lengths) {
+//                        writer.append('\r\r\n' + sw.toString() + '\r\n')
+//                        writer.append(lines.get(lengths))
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//class VersionMsg {
+//    String versionCode
+//    String versionName
+//    String versionInfo
+//}
+//
+//task taskTest {
+//    dependsOn readTask, writeTask
+//    doLast {
+//        println '输入输出任务结束'
+//    }
+//}
+
+///**
+// * 执行顺序的指定
+// */
+//task taskX {
+//    doLast {
+//        println 'taskX'
+//    }
+//}
+//
+//task taskY {
+//    mustRunAfter taskX
+//    doLast {
+//        println 'taskY'
+//    }
+//}
+//
+//task taskZ {
+//    mustRunAfter taskY
+//    doLast {
+//        println 'taskZ'
+//    }
+//}
+
+//this.project.afterEvaluate { project ->
+//    def buildTask = project.tasks.getByName('build')
+//    if(buildTask == null) {
+//        throw GradleException('the build task is not found')
+//    }
+//    buildTask.doLast {
+//        writeTask.execute()
+//    }
+//}
+
+// 这个测试代码不行
+//this.project.afterEvaluate { project ->
+//    def processDebugManifest = project.tasks.getByName('processDebugManifest')
+//    def processResources = project.tasks.getByName('processDebugResources')
+//    task taskK {
+//        mustRunAfter processDebugManifest
+//        dependsOn processResources
+//        doLast {
+//            println '===================================================> taskK'
+//        }
+//    }
+//    
+//    if(taskK == null) {
+//        throw GradleException('the build task is not found')
+//    }
+//
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

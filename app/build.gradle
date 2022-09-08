@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply from : file('../script/task.gradle')
+
+apply plugin: 'com.imooc.gradle.study'
 
 android {
     compileSdkVersion 33
@@ -24,7 +27,15 @@ android {
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+//        encoding "GBK"
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs'] // �޸�so����λ��
+        }
+    }
+
 
 }
 
@@ -37,3 +48,38 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
 }
+
+/**
+ * 为自定义插件传递参数
+ */
+imoocReleaseInfo {
+    versionCode = rootProject.ext.android.versionCode
+    versionName = rootProject.ext.android.versionName
+    versionInfo = '第8个版本。。。'
+    fileName = 'releases1.xml'
+}
+
+//this.afterEvaluate {
+//    this.android.applicationVariants.all { variant ->
+//        def name = variant.name
+//        def baseName = variant.baseName
+//        println "==========> this name is $name,  this baseName is $baseName"
+//    }
+//}
+
+//this.afterEvaluate {
+//    this.android.applicationVariants.all { variant ->
+//        def output = variant.outputs.first()
+//        def apkName = "app-${variant.baseName}-${variant.versionName}.apk"
+//        output.outputFile = new File(output.outputFile.parent, apkName)
+//        println "==========> this output name is ${output.outputFile.name}"
+//    }
+//}
+
+this.afterEvaluate {
+    this.android.applicationVariants.all { variant ->
+        def task = variant.checkManifest
+        println "==========> this task name is ${task.name}"
+    }
+}
+

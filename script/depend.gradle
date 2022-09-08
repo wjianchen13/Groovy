@@ -3,28 +3,47 @@
  */
 println("=============================================================> gradle depend api start")
 
-buildscript { ScriptHandler scriptHandler ->
-    // 配置工程的仓库地址
-    scriptHandler.repositories { RepositoryHandler repositoryHandler ->
-        repositoryHandler.jcenter()
-        repositoryHandler.mavenCentral()
-        repositoryHandler.mavenLocal()
-        repositoryHandler.ivy {}
-        repositoryHandler.maven {
-            name 'personal'
-            url 'http://localhost:8081:/nexus/repositories/'
-            credentials {
-                username = 'admin'
-                password = 'admin123'
+//buildscript { ScriptHandler scriptHandler ->
+//    // 配置工程的仓库地址
+//    scriptHandler.repositories { RepositoryHandler repositoryHandler ->
+//        repositoryHandler.jcenter()
+//        repositoryHandler.mavenCentral()
+//        repositoryHandler.mavenLocal()
+//        repositoryHandler.ivy {}
+//        repositoryHandler.maven {
+//            name 'personal'
+//            url 'http://localhost:8081:/nexus/repositories/'
+//            credentials {
+//                username = 'admin'
+//                password = 'admin123'
+//            }
+//        }
+//    }
+//
+//    // 配置工程的"插件"地址
+//    scriptHandler.dependencies {
+//        classpath 'com.android.tools.build:gradle:2.2.2'
+//    }
+//}
+
+task(name: 'apkcopy') {
+    doLast {
+        def sourcePath = this.buildDir.path + '/outputs/apk'
+        def desationPath = '/users/Downloads/'
+        def command = "mv -f ${sourcePath} ${desationPath}"
+        exec {
+            try {
+                executable 'bash'
+                args '-c', command
+                println "the command is execute success."
+            } catch (GradleException e){
+                println "the command is execute failed."
             }
         }
     }
-
-    // 配置工程的"插件"地址
-    scriptHandler.dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
-    }
 }
+
+
 
 
 
